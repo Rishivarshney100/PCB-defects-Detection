@@ -100,9 +100,11 @@ python src/infer.py --model models/weights/best.pt --image path/to/image.jpg --o
 
 **Example**:
 
-Input: `samples/defective/01_missing_hole_07.jpg` (Original PCB image with defects)
+Input:![01_missing_hole_07](https://github.com/user-attachments/assets/7c63fdc2-7e71-4244-a49b-a6dcc04ade9d)
 
-Output: `results/visualizations/defective_01_missing_hole_07.jpg` (Annotated image with bounding boxes and labels showing detected defects)
+
+Output:![defective_01_missing_hole_07](https://github.com/user-attachments/assets/002eee9f-0652-4dc7-b264-30a45233fd8f)
+
 
 The system detects defects, draws colored bounding boxes around them, and displays labels with defect type, confidence, and severity on a black background with white text.
 
