@@ -72,8 +72,7 @@ pip install -r requirements.txt
 **Download Steps**:
 1. Create Kaggle account
 2. Download dataset from [Kaggle](https://www.kaggle.com/datasets/akhatova/pcb-defects)
-3. Extract and place as `PCB_DATASET/` in project root
-4. Dataset is already processed (693 images, YOLO format)
+3. Dataset is already processed (693 images, YOLO format)
 
 **Dataset Stats**:
 - Total: 693 images
@@ -95,11 +94,19 @@ python src/train.py --data data/dataset.yaml --epochs 50 --batch-size 8 --model 
 - `--model`: Model size n/s/m/l/x (default: s)
 - `--device`: cuda/cpu (auto-detect if not specified)
 
-### Inference
+### Inference(to test sample PCBs)
 
 ```bash
 python src/infer.py --model models/weights/best.pt --image path/to/image.jpg --output-json results/predictions/result.json --output-viz results/visualizations/result.jpg
 ```
+
+**Example**:
+
+Input: `samples/defective/01_missing_hole_07.jpg` (Original PCB image with defects)
+
+Output: `results/visualizations/defective_01_missing_hole_07.jpg` (Annotated image with bounding boxes and labels showing detected defects)
+
+The system detects defects, draws colored bounding boxes around them, and displays labels with defect type, confidence, and severity on a black background with white text.
 
 **Output JSON Format**:
 ```json

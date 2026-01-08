@@ -33,28 +33,9 @@ CLASS_NAMES = {
 def draw_bounding_boxes(image: np.ndarray,
                        defects: List[Dict],
                        class_names: Dict[int, str] = None,
-                       show_confidence: bool = True,
-                       show_center: bool = True,
-                       show_severity: bool = True) -> np.ndarray:
-    """
-    Draw bounding boxes, labels, and defect centers on image.
-    
-    Args:
-        image: Input image (numpy array, BGR format)
-        defects: List of defect dictionaries with keys:
-                 - 'bbox': [xmin, ymin, xmax, ymax]
-                 - 'defect_type': str or class_id
-                 - 'confidence': float
-                 - 'center': [x, y] (optional)
-                 - 'severity': str (optional)
-        class_names: Dictionary mapping class_id to class name
-        show_confidence: Whether to show confidence scores
-        show_center: Whether to mark defect centers
-        show_severity: Whether to show severity levels
-        
-    Returns:
-        Annotated image (numpy array)
-    """
+                       show_confidence: bool = False,
+                       show_center: bool = False,
+                       show_severity: bool = False) -> np.ndarray:
     if class_names is None:
         class_names = CLASS_NAMES
     
@@ -77,7 +58,7 @@ def draw_bounding_boxes(image: np.ndarray,
         
         color = COLORS.get(class_key, COLORS['default'])
         
-        thickness = 2
+        thickness = 3
         cv2.rectangle(annotated_image, (xmin, ymin), (xmax, ymax), color, thickness)
         
         label_parts = [defect_type_name]
@@ -93,41 +74,32 @@ def draw_bounding_boxes(image: np.ndarray,
         label = ' | '.join(label_parts)
         
         font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale = 0.6
-        text_thickness = 2
+        font_scale = 1.2
+        text_thickness = 3
         (text_width, text_height), baseline = cv2.getTextSize(
             label, font, font_scale, text_thickness
         )
         
-        label_y = max(ymin, text_height + 10)
+        padding = 8
+        label_y = max(ymin - 40, text_height + padding * 2)
         cv2.rectangle(
             annotated_image,
-            (xmin, label_y - text_height - 10),
-            (xmin + text_width + 10, label_y + baseline),
-            color,
+            (xmin, label_y - text_height - padding),
+            (xmin + text_width + padding * 2, label_y + baseline + padding),
+            (0, 0, 0),
             -1
         )
         
         cv2.putText(
             annotated_image,
             label,
-            (xmin + 5, label_y - 5),
+            (xmin + padding, label_y - padding // 2),
             font,
             font_scale,
             (255, 255, 255),
             text_thickness,
             cv2.LINE_AA
         )
-        
-        if show_center:
-            if 'center' in defect:
-                center_x, center_y = defect['center']
-            else:
-                center_x = int((xmin + xmax) / 2)
-                center_y = int((ymin + ymax) / 2)
-            
-            cv2.circle(annotated_image, (center_x, center_y), 5, color, -1)
-            cv2.circle(annotated_image, (center_x, center_y), 8, (255, 255, 255), 2)
     
     return annotated_image
 

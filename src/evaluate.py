@@ -160,7 +160,7 @@ class ModelEvaluator:
         """
         test_dir = Path(test_images_dir)
         if not test_dir.exists():
-        print(f"Test directory not found: {test_images_dir}")
+            print(f"Test directory not found: {test_images_dir}")
             return
     
         image_files = list(test_dir.glob("*.jpg")) + list(test_dir.glob("*.png"))
